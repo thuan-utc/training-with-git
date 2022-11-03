@@ -45,7 +45,7 @@ public class PostService {
         if (oldPost.isPresent()){
             oldPost.get().setTitle(post.getTitle());
             oldPost.get().setDescription(post.getDescription());
-            oldPost.get().setPdate(post.getPdate());
+            oldPost.get().setPostDate(post.getPostDate());
             oldPost.get().setContent(post.getContent());
             oldPost.get().setAuthor(post.getAuthor());
             postRepository.save(oldPost.get());

@@ -2,6 +2,7 @@ package com.example.training_new.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -15,10 +16,11 @@ public class Post {
     private String title;
     @NotBlank(message = "description is mandatory")
     private String description;
+
     @NotBlank(message = "description is mandatory")
     private String content;
-    @NotBlank(message = "pdate is mandatory")
-    private LocalDate pdate;
+    @NotNull(message = "post date is mandatory")
+    private LocalDate postDate;
 
     public void setPostAuthor(Author postAuthor) {
         this.postAuthor = postAuthor;
@@ -31,22 +33,12 @@ public class Post {
     public Post() {
     }
 
-    public Post(int id, String author, String title, String description, String content, LocalDate pdate, Author postAuthor) {
-        this.id = id;
+    public Post(String author, String title, String description, String content, LocalDate postDate) {
         this.author = author;
         this.title = title;
         this.description = description;
         this.content = content;
-        this.pdate = pdate;
-        this.postAuthor = postAuthor;
-    }
-
-    public Post(String author, String title, String description, String content, LocalDate pdate) {
-        this.author = author;
-        this.title = title;
-        this.description = description;
-        this.content = content;
-        this.pdate = pdate;
+        this.postDate = postDate;
     }
 
     public int getId() {
@@ -89,12 +81,12 @@ public class Post {
         this.content = content;
     }
 
-    public LocalDate getPdate() {
-        return pdate;
+    public LocalDate getPostDate() {
+        return postDate;
     }
 
-    public void setPdate(LocalDate pdate) {
-        this.pdate = pdate;
+    public void setPostDate(LocalDate postDate) {
+        this.postDate = postDate;
     }
 
     public Author getPostAuthor() {

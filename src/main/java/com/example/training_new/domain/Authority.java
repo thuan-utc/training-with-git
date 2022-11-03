@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "Authority")
 public class Authority {
     @Id
     @NotBlank(message = "username is mandatory")
