@@ -6,7 +6,8 @@ class ErrorJson {
     String code;
     String message;
 
-    public ErrorJson() {}
+    public ErrorJson() {
+    }
 
     public ErrorJson(String code, String message, String uri) {
         this.code = code;

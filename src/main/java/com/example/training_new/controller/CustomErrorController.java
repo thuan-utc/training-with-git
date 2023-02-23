@@ -1,5 +1,7 @@
 package com.example.training_new.controller;
 
+import com.example.training_new.exception.BusinessException;
+import com.example.training_new.exception.SomethingNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,7 @@ class CustomErrorController {
 
         HttpStatus httpStatus;
 
-       /* if (ex instanceof BusinessException) {
+        if (ex instanceof BusinessException) {
 
             // logging exception message
             log.warn("Problem processing request: " + request.getRequestURI());
@@ -41,7 +43,7 @@ class CustomErrorController {
             ErrorJson error = new ErrorJson(((BusinessException) ex).getErrorCode(), ex.getMessage(), request.getRequestURI());
             return new ResponseEntity<>(error, httpStatus);
 
-        } else */if (ex instanceof MethodArgumentNotValidException) {
+        } else if (ex instanceof MethodArgumentNotValidException) {
             List<String> errors = new ArrayList<>();
             ((MethodArgumentNotValidException) ex).getBindingResult().getAllErrors().forEach((error) -> {
                 String fieldName = ((FieldError) error).getField();
@@ -65,11 +67,11 @@ class CustomErrorController {
                     String.join(",", errors),
                     request.getRequestURI());
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-        } else if (ex.getCause() !=null && ex.getCause().getCause() instanceof ConstraintViolationException) {
+        } else if (ex.getCause() != null && ex.getCause().getCause() instanceof ConstraintViolationException) {
             Set<ConstraintViolation<?>> constraintViolations = ((ConstraintViolationException) ex.getCause().getCause()).getConstraintViolations();
             List<String> errors = new ArrayList<>();
             for (ConstraintViolation<?> constraintViolation : constraintViolations) {
-                errors.add(String.format("[field: %s - erorMsg: %s]",constraintViolation.getPropertyPath().toString() , constraintViolation.getMessage()));
+                errors.add(String.format("[field: %s - erorMsg: %s]", constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage()));
             }
             ErrorJson error = new ErrorJson(
                     "N/A",

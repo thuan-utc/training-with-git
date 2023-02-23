@@ -12,23 +12,23 @@ public class Post {
     private int id;
     @NotBlank(message = "author is mandatory")
     private String author;
-    @NotBlank(message = "Title is mandatory")
+    @NotBlank(message = "title is mandatory")
     private String title;
     @NotBlank(message = "description is mandatory")
     private String description;
-
     @NotBlank(message = "description is mandatory")
     private String content;
+
+
     @NotNull(message = "post date is mandatory")
     private LocalDate postDate;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "author_username", referencedColumnName = "username")
+    private Author postAuthor;
 
     public void setPostAuthor(Author postAuthor) {
         this.postAuthor = postAuthor;
     }
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "author_username", referencedColumnName = "username")
-    private Author postAuthor;
 
     public Post() {
     }
@@ -91,5 +91,18 @@ public class Post {
 
     public Author getPostAuthor() {
         return postAuthor;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", author='" + author + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", content='" + content + '\'' +
+                ", postDate=" + postDate +
+                ", postAuthor=" + postAuthor +
+                '}';
     }
 }

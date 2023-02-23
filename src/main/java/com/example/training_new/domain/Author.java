@@ -11,6 +11,7 @@ import java.util.Set;
 @Entity
 public class Author {
     @Id
+    @NotBlank(message = "username is mandatory")
     private String username;
     @NotBlank(message = "password is mandatory")
     private String password;
@@ -40,6 +41,7 @@ public class Author {
     public Set<Authority> getAuthorities() {
         return authorities;
     }
+
     public Author(String username, String password, String firstName,
                   String lastName, String email, LocalDate dob, Instant added) {
         this.username = username;

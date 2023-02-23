@@ -1,6 +1,7 @@
 package com.example.training_new.service;
 
 import com.example.training_new.domain.Post;
+import com.example.training_new.exception.BusinessException;
 import com.example.training_new.repository.PostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,57 +21,51 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Iterable<Post> getAllPosts(){
+    public Iterable<Post> getAllPosts() {
         return postRepository.findAll();
     }
 
-    public void createPost(Post post){
-        postRepository.save(post);
-    }
-
-    public Boolean checkIfPostHasExited(int id){
-        if (postRepository.existsById(id)){
-            log.info("id {} has exited",id);
+    public Boolean checkIfPostHasExited(int id) {
+        if (postRepository.existsById(id)) {
+            log.info("id {} has exited", id);
             return true;
-        }
-        else {
+        } else {
             log.info("id {} dose not exit", id);
             return false;
         }
 
     }
 
-    public void updatePost(Post post, int id){
+    public Post createPost(Post post) {
+        return postRepository.save(post);
+    }
+
+    public Post updatePost(Post post, int id) {
         Optional<Post> oldPost = postRepository.findById(id);
-        if (oldPost.isPresent()){
+        if (oldPost.isPresent()) {
             oldPost.get().setTitle(post.getTitle());
             oldPost.get().setDescription(post.getDescription());
             oldPost.get().setPostDate(post.getPostDate());
             oldPost.get().setContent(post.getContent());
             oldPost.get().setAuthor(post.getAuthor());
-            postRepository.save(oldPost.get());
-            log.info("Update post has id = {} successfully", id);
+            return postRepository.save(oldPost.get());
         }
-        else{
-            log.info("Update failed, id = {} dose not exit", id);
-        }
+        throw new BusinessException("400 Bad request", "Update post failed");
     }
 
-    public List<Post> getPostsOfAuthorSearchByEmail(String email){
+    public List<Post> getPostsOfAuthorSearchByEmail(String email) {
         return postRepository.findPostsOfAuthorSearchByEmail(email);
     }
 
-    public List<Post> getTop10PostsNewest(){
+    public List<Post> getTop10PostsNewest() {
         return postRepository.findTop10Lastest();
     }
 
-    public void deletePost(int id){
-        if (postRepository.existsById(id)){
+    public void deletePost(int id) {
+        if (postRepository.existsById(id)) {
             postRepository.deleteById(id);
-            log.info("Delete post has id = {} successfully",id);
+            log.info("Delete post has id = {} successfully", id);
         }
-        else{
-            log.info("Delete failed, id = {} dose not exit", id);
-        }
+        throw new BusinessException("Delete post failed");
     }
 }
